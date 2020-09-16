@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home-wrapper">
+    <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
+    }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import '../styles/_mixins.scss';
+
+  .home-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 20px;
+
+    button {
+      @include button(#cf3d33);
+    }
+  }
+</style>
