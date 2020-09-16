@@ -23,8 +23,8 @@ export default {
   name: 'Login',
   data() {
     return {
-      email: 'gora@studio.ru',
-      password: '092020'
+      email: '',
+      password: ''
     }
   },
   computed: {
