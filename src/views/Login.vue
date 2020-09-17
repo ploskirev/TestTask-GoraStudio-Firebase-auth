@@ -115,24 +115,25 @@ export default {
         height: 30px;
         border-radius: 3px;
         outline: none;
+        border: 1px solid gray;
+        padding: 0 5px;
 
         &:focus {
-          border: 3px solid #336acf;
+          border: 2px solid #336acf;
         }
 
         &.invalid {
-          border: 3px solid #cf3d33;
+          border: 2px solid #cf3d33;
         }
       }
 
       .invalid {
-        border: 3px solid #cf3d33;
+        border: 2px solid #cf3d33;
       }
     }
 
     input[type='submit'] {
       @include button(#336acf);
-      width: 100%;
       margin-bottom: 20px;
     }
 
