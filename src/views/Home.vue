@@ -1,12 +1,20 @@
 <template>
   <div class="home-wrapper">
+    <h1>{{user}}</h1>
     <button @click="logout">Logout</button>
   </div>
 </template>
 
 <script>
+import firebase from 'firebase/app';
+
 export default {
   name: 'Home',
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    }
+  },
   methods: {
     logout() {
       this.$store.dispatch('logout');
@@ -18,15 +26,22 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/_mixins.scss';
 
-  .home-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 0 20px;
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 20px;
 
-    button {
-      @include button(#cf3d33);
-    }
+  h1 {
+    margin-bottom: 40px;
+    font-size: 28px;
+    font-weight: 700;
   }
+
+  button {
+    @include button(#cf3d33);
+  }
+}
 </style>

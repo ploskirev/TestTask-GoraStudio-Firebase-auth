@@ -7,27 +7,34 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isAuth: false,
-    error: ''
+    error: null,
+    currentUser: localStorage.getItem('user')
   },
   getters: {
-    auth: state => state.isAuth,
     err: state => state.error,
+    user: state => state.currentUser
   },
   mutations: {
-    changeAuth(state) {
-      state.isAuth = !state.isAuth;
-    },
     setError(state, message) {
       state.error = message;
+    },
+    clearError(state) {
+      state.error = null;
+    },
+    setUser(state, user) {
+      state.currentUser = user;
+    },
+    clearUser(state) {
+      state.currentUser = '';
     }
   },
   actions: {
     async login({commit}, {email, password}) {
       try {
         await firebase.auth().signInWithEmailAndPassword(email, password);
-        commit('changeAuth');
-        commit('setError', '');
+        commit('clearError');
+        commit('setUser', firebase.auth().currentUser.email);
+        localStorage.setItem('user', firebase.auth().currentUser.email);
         setTimeout(() => {
           router.push('/');
         }, 14000);
@@ -39,7 +46,8 @@ export default new Vuex.Store({
     async logout({commit}) {
       try {
         await firebase.auth().signOut();
-        commit('changeAuth');
+        commit('clearUser');
+        localStorage.setItem('user', '');
         router.push('/login');
       } catch (err) {
         console.log(err);

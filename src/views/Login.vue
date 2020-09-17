@@ -1,13 +1,27 @@
 <template>
   <div class="login-wrapper">
-    <form v-if="!auth" action="#">
+    <form @submit.prevent="login" v-if="!auth" action="#">
       <div class="form-item">
         <label for="email">email</label>
-        <input type="email" id="email" v-model="email">
+        <input 
+          type="email" 
+          id="email" 
+          v-model="email" 
+          :class="{invalid: invalid.email}" 
+          placeholder="abc@abc.abc"
+          @input="reCheckInput"
+        >
       </div>
       <div class="form-item">
         <label for="pass">password</label>
-        <input type="password" id="pass" v-model="password">
+        <input 
+          type="password" 
+          id="pass" 
+          v-model="password"
+          :class="{invalid: invalid.password}"
+          placeholder="min 6 characters"
+          @input="reCheckInput"
+        >
       </div>
       <input @click.prevent="login" type="submit" value="Login">
       <div class="error-msg">{{error}}</div>
@@ -24,23 +38,41 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      invalid: {
+        email: false,
+        password: false
+      },
+      tryLogin: false
     }
   },
   computed: {
     auth() {
-      return this.$store.getters.auth;
+      return this.$store.getters.user;
     },
     error() {
       return this.$store.getters.err;
     }
   },
   methods: {
+    validate() {
+      this.invalid.email = !!this.email.search(/^[^\s@]+@[^\s@]+\.[^\s]+$/i);
+      this.invalid.password = this.password.length < 6;
+    },
+    reCheckInput() {
+      if (this.tryLogin) {
+        this.validate();
+      }
+    },
     login() {
+      this.tryLogin = true;
+      this.validate();
+      if (this.invalid.email || this.invalid.password) {
+        return;
+      }
       this.$store.dispatch('login', {email: this.email, password: this.password})
         .then(() => {
-          if (this.$store.getters.auth) {
-            console.log('true')
+          if (this.$store.getters.user) {
             this.email = '';
             this.password = '';
           } 
@@ -80,6 +112,21 @@ export default {
 
       input {
         flex: 2 0 150px;
+        height: 30px;
+        border-radius: 3px;
+        outline: none;
+
+        &:focus {
+          border: 3px solid #336acf;
+        }
+
+        &.invalid {
+          border: 3px solid #cf3d33;
+        }
+      }
+
+      .invalid {
+        border: 3px solid #cf3d33;
       }
     }
 
