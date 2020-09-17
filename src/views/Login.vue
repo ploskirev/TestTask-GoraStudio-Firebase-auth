@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     validate() {
-      this.invalid.email = !!this.email.search(/^[^\s@]+@[^\s@]+\.[^\s]+$/i);
+      this.invalid.email = !!this.email.search(/^[^\s@]+@[^\s]+\.[^\s]+$/i);
       this.invalid.password = this.password.length < 6;
     },
     reCheckInput() {
